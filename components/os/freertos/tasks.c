@@ -614,6 +614,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB ) PRIVILEGED_FUNCTION;
 
             prvInitialiseNewTask( pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, &xReturn, pxNewTCB, NULL );
             prvAddNewTaskToReadyList( pxNewTCB );
+            printf("has come here! and pxNewTCB is %d" ,pxNewTCB);
         }
         else
         {
@@ -803,6 +804,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB ) PRIVILEGED_FUNCTION;
 
             prvInitialiseNewTask( pxTaskCode, pcName, ( uint32_t ) usStackDepth, pvParameters, uxPriority, pxCreatedTask, pxNewTCB, NULL );
             prvAddNewTaskToReadyList( pxNewTCB );
+            printf("has come here! dynamic and pxNewTCB is %d" ,pxNewTCB);
             xReturn = pdPASS;
         }
         else
@@ -1997,7 +1999,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB )
 void vTaskStartScheduler( void )
 {
     BaseType_t xReturn;
-
+    printf(" vTaskStartScheduler called!");
     /* Add the idle task at the lowest priority. */
     #if ( configSUPPORT_STATIC_ALLOCATION == 1 )
         {
@@ -4029,12 +4031,12 @@ static void prvResetNextTaskUnblockTime( void )
     TaskHandle_t xTaskGetCurrentTaskHandle( void )
     {
         TaskHandle_t xReturn;
-
+        // printf("Z.0\r\n");
         /* A critical section is not required as this is not called from
          * an interrupt and the current TCB will always be the same for any
          * individual execution thread. */
         xReturn = pxCurrentTCB;
-
+        // printf("Z.1  %d\r\n",xReturn);
         return xReturn;
     }
 

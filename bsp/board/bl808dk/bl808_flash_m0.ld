@@ -11,9 +11,9 @@
 /* configure the CPU type */
 OUTPUT_ARCH( "riscv" )
 /* link with the standard c library */
-INPUT(-lc)
+/* INPUT(-lc) */
 /* link with the standard GCC library */
-INPUT(-lgcc)
+/* INPUT(-lgcc) */
 /* configure the entry point */
 ENTRY(__start)
 
@@ -27,7 +27,7 @@ MEMORY
 {
     fw_header_memory  (rx)  : ORIGIN = 0x58000000 - 0x1000, LENGTH = 4K
     xip_memory  (rx)  : ORIGIN = 0x58000000, LENGTH = 32M
-    ram_psram  (wxa)  : ORIGIN = 0x50000000, LENGTH = 64M
+    ram_psram  (wxa)  : ORIGIN = 0x53000000, LENGTH = 12M
     itcm_memory (rx)  : ORIGIN = 0x62020000, LENGTH = 20K
     dtcm_memory (rx)  : ORIGIN = 0x62025000, LENGTH = 4K
     nocache_ram_memory (!rx) : ORIGIN = 0x22026000, LENGTH = 16K

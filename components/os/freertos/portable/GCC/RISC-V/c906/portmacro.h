@@ -183,8 +183,9 @@ definition is found. */
 
 portFORCE_INLINE static BaseType_t xPortIsInsideInterrupt( void )
 {
-    extern uint64_t g_irq_nested_level;
-    return g_irq_nested_level ? 1 : 0;
+    // extern uint64_t g_irq_nested_level;
+    // return g_irq_nested_level ? 1 : 0;
+	return 1;
 }
 
 #ifdef __cplusplus

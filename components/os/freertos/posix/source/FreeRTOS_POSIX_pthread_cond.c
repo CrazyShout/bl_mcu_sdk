@@ -105,6 +105,7 @@ static void prvTestAndDecrement( pthread_cond_t * pxCond,
 int pthread_cond_broadcast( pthread_cond_t * cond )
 {
     unsigned i = 0;
+    printf("pthread_cond_broadcast coming in!\r\n");
     pthread_cond_internal_t * pxCond = ( pthread_cond_internal_t * ) ( cond );
 
     /* If the cond is uninitialized, perform initialization. */

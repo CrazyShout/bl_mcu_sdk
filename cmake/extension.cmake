@@ -237,6 +237,23 @@ macro(project name)
   set(MAP_FILE ${build_dir}/${proj_name}.map)
   set(ASM_FILE ${build_dir}/${proj_name}.asm)
 
+  # 由于编译后会导致部分文件无法找到实现的函数，因此将wamr静态库链接放到这里来做###################
+  # if (NOT DEFINED WAMR_ROOT_DIR)
+  # # this assumption is true if this file is copied to WAMR_ROOT
+  # # set (WAMR_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/wamr)
+  # set (WAMR_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../wasm-micro-runtime/)
+  # message(AUTHOR_WARNING "这是wamr根目录" ${WAMR_ROOT_DIR})
+  # endif ()
+
+  # include (${WAMR_ROOT_DIR}/build-scripts/runtime_lib.cmake)
+  # sdk_generate_library(vmlib)
+  # sdk_add_include_directories(${RUNTIME_LIB_HEADER_LIST})
+  # sdk_library_add_sources(${WAMR_RUNTIME_LIB_SOURCE})
+  # # add_library(vmlib STATIC ${WAMR_RUNTIME_LIB_SOURCE})
+  # # target_link_libraries(vmlib PUBLIC sdk_intf_lib)
+  # sdk_add_link_libraries(vmlib)
+  # 结束##################################################################################### 
+
   add_executable(${proj_name}.elf ${CURRENT_MAIN_FILE})
   target_link_libraries(${proj_name}.elf sdk_intf_lib)
   get_property(LINKER_SCRIPT_PROPERTY GLOBAL PROPERTY LINKER_SCRIPT)
@@ -248,6 +265,9 @@ macro(project name)
 
   get_property(SDK_LIBS_PROPERTY GLOBAL PROPERTY SDK_LIBS)
   target_link_libraries(${proj_name}.elf -Wl,--whole-archive ${SDK_LIBS_PROPERTY} app -Wl,--no-whole-archive)
+  # target_link_libraries(${proj_name}.elf -Wl,--whole-archive $<REVERSE:${SDK_LIBS_PROPERTY}> app -Wl,--no-whole-archive)
+
+  # target_link_libraries(${proj_name}.elf vmlib)
 
   if(OUTPUT_DIR)
     add_custom_command(TARGET ${proj_name}.elf POST_BUILD

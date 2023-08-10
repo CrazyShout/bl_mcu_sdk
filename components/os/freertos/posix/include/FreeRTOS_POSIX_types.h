@@ -78,4 +78,16 @@
     typedef void                       * PthreadBarrierType_t;
 #endif
 
+/* the codes below are writen by xuyunjiang at schoow university */
+
+#define __ONCE_ALIGNMENT
+/* Once-only execution */
+typedef int __ONCE_ALIGNMENT pthread_once_t;
+/* Single execution handling.  */
+#define PTHREAD_ONCE_INIT 0
+
+#ifndef PATH_MAX
+#define PATH_MAX 1024
+#endif
+
 #endif /* _FREERTOS_POSIX_INTERNAL_TYPES_H_ */

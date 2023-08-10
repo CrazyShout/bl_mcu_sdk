@@ -140,8 +140,13 @@ void pmem_init(void *heapstart, size_t heapsize)
 void *malloc(size_t size)
 {
     MEM_LOG("malloc %d\r\n", size);
+    // printf("ready to malloc,size is: %x \r\n", size);
+    void * addr = bflb_malloc(PMEM_HEAP, size);
+    if (addr == NULL){
+        printf("malloc failure!\r\n");
+    }
 
-    return bflb_malloc(PMEM_HEAP, size);
+    return addr;
 }
 
 /****************************************************************************
@@ -161,7 +166,13 @@ void *malloc(size_t size)
 
 void *realloc(void *old, size_t newlen)
 {
-    return bflb_realloc(PMEM_HEAP, old, newlen);
+    printf("ready to realloc,size is: %x \r\n", newlen);
+    void * addr = bflb_realloc(PMEM_HEAP, old, newlen);
+    if (addr == NULL){
+        printf("realloc failure!\r\n");
+    }
+
+    return addr;
 }
 
 /****************************************************************************

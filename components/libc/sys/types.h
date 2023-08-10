@@ -47,7 +47,7 @@ typedef __intptr_t register_t;
 
 #if __BSD_VISIBLE
 #include <machine/endian.h>
-#include <sys/select.h>
+// #include <sys/select.h>
 #  define	physadr		physadr_t
 #  define	quad		quad_t
 
@@ -104,7 +104,7 @@ typedef	__blksize_t	blksize_t;
 #endif
 
 #if !defined(__clock_t_defined) && !defined(_CLOCK_T_DECLARED)
-typedef	_CLOCK_T_	clock_t;
+// typedef	_CLOCK_T_	clock_t;
 #define	__clock_t_defined
 #define	_CLOCK_T_DECLARED
 #endif
@@ -181,12 +181,12 @@ typedef	__key_t		key_t;		/* IPC key */
 #endif
 
 #ifndef _SSIZE_T_DECLARED
-typedef _ssize_t ssize_t;
+// typedef _ssize_t ssize_t;
 #define	_SSIZE_T_DECLARED
 #endif
 
 #ifndef _MODE_T_DECLARED
-typedef	__mode_t	mode_t;		/* permissions */
+// typedef	__mode_t	mode_t;		/* permissions */
 #define	_MODE_T_DECLARED
 #endif
 
@@ -196,13 +196,13 @@ typedef	__nlink_t	nlink_t;	/* link count */
 #endif
 
 #if !defined(__clockid_t_defined) && !defined(_CLOCKID_T_DECLARED)
-typedef	__clockid_t	clockid_t;
+// typedef	__clockid_t	clockid_t;
 #define	__clockid_t_defined
 #define	_CLOCKID_T_DECLARED
 #endif
 
 #if !defined(__timer_t_defined) && !defined(_TIMER_T_DECLARED)
-typedef	__timer_t	timer_t;
+// typedef	__timer_t	timer_t;
 #define	__timer_t_defined
 #define	_TIMER_T_DECLARED
 #endif
@@ -225,6 +225,185 @@ typedef	__int64_t	sbintime_t;
 #endif
 #include <machine/types.h>
 
+//因为bl sdk 中libc组件会默认使用自己写的而非编译器提供的内建函数，如libc
+//os组件中的posix子项提供了同样的sys/types.h会引起编译报错，重复定义
+//迁移posix子项下的sys/types.h中的部分关键项至此
+
+/* FreeRTOS types include */
+#include "FreeRTOS_POSIX_types.h"
+/**
+ * @brief Used for system times in clock ticks or CLOCKS_PER_SEC.
+ *
+ * Enabled/disabled by posixconfigENABLE_CLOCK_T.
+ */
+#if !defined( posixconfigENABLE_CLOCK_T ) || ( posixconfigENABLE_CLOCK_T == 1 )
+    typedef uint32_t                 clock_t;
+#endif
+
+/**
+ * @brief Used for clock ID type in the clock and timer functions.
+ *
+ * Enabled/disabled by posixconfigENABLE_CLOCKID_T.
+ */
+#if !defined( posixconfigENABLE_CLOCKID_T ) || ( posixconfigENABLE_CLOCKID_T == 1 )
+    typedef int                      clockid_t;
+#endif
+
+/**
+ * @brief Used for some file attributes.
+ *
+ * Enabled/disabled by posixconfigENABLE_MODE_T.
+ */
+#if !defined( posixconfigENABLE_MODE_T ) || ( posixconfigENABLE_MODE_T == 1 )
+    typedef int                      mode_t;
+#endif
+
+/**
+ * @brief Used for process IDs and process group IDs.
+ *
+ * Enabled/disabled by posixconfigENABLE_PID_T.
+ */
+#if !defined( posixconfigENABLE_PID_T ) || ( posixconfigENABLE_PID_T == 1 )
+    typedef int                      pid_t;
+#endif
+
+/**
+ * @brief Used to identify a thread attribute object.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_ATTR_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_ATTR_T ) || ( posixconfigENABLE_PTHREAD_ATTR_T == 1 )
+    typedef PthreadAttrType_t        pthread_attr_t;
+#endif
+
+/**
+ * @brief Used to identify a barrier.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_BARRIER_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_BARRIER_T ) || ( posixconfigENABLE_PTHREAD_BARRIER_T == 1 )
+    typedef PthreadBarrierType_t     pthread_barrier_t;
+#endif
+
+/**
+ * @brief Used to define a barrier attributes object.
+ */
+typedef void                         * pthread_barrierattr_t;
+
+/**
+ * @brief Used for condition variables.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_COND_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_COND_T ) || ( posixconfigENABLE_PTHREAD_COND_T == 1 )
+    typedef  PthreadCondType_t       pthread_cond_t;
+#endif
+
+/**
+ * @brief Used to identify a condition attribute object.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_CONDATTR_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_CONDATTR_T ) || ( posixconfigENABLE_PTHREAD_CONDATTR_T == 1 )
+    typedef void                     * pthread_condattr_t;
+#endif
+
+/**
+ * @brief Used for mutexes.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_MUTEX_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_MUTEX_T ) || ( posixconfigENABLE_PTHREAD_MUTEX_T == 1 )
+    typedef PthreadMutexType_t       pthread_mutex_t;
+#endif
+
+/**
+ * @brief Used to identify a mutex attribute object.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_MUTEXATTR_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_MUTEXATTR_T ) || ( posixconfigENABLE_PTHREAD_MUTEXATTR_T == 1 )
+    typedef PthreadMutexAttrType_t   pthread_mutexattr_t;
+#endif
+
+/**
+ * @brief Used to identify a thread.
+ *
+ * Enabled/disabled by posixconfigENABLE_PTHREAD_T.
+ */
+#if !defined( posixconfigENABLE_PTHREAD_T ) || ( posixconfigENABLE_PTHREAD_T == 1 )
+    typedef void                     * pthread_t;
+#endif
+
+/**
+ * @brief Used for a count of bytes or an error indication.
+ *
+ * Enabled/disabled by posixconfigENABLE_SSIZE_T.
+ */
+#if !defined( posixconfigENABLE_SSIZE_T ) || ( posixconfigENABLE_SSIZE_T == 1 )
+    typedef int                      ssize_t;
+#endif
+
+/**
+ * @brief Used for time in seconds.
+ *
+ * Enabled/disabled by posixconfigENABLE_TIME_T.
+ */
+#if !defined( posixconfigENABLE_TIME_T ) || ( posixconfigENABLE_TIME_T == 1 )
+    typedef int64_t                  time_t;
+#endif
+
+/**
+ * @brief Used for timer ID returned by timer_create().
+ *
+ * Enabled/disabled by posixconfigENABLE_TIMER_T.
+ */
+#if !defined( posixconfigENABLE_TIMER_T ) || ( posixconfigENABLE_TIMER_T == 1 )
+    typedef void                     * timer_t;
+#endif
+
+/**
+ * @brief Used for time in microseconds.
+ *
+ * Enabled/disabled by posixconfigENABLE_USECONDS_T.
+ */
+#if !defined( posixconfigENABLE_USECONDS_T ) || ( posixconfigENABLE_USECONDS_T == 1 )
+    typedef unsigned long            useconds_t;
+#endif
+
+/**
+ * @brief Used for file sizes.
+ *
+ * Enabled/disabled by posixconfigENABLE_OFF_T.
+ */
+#if !defined( posixconfigENABLE_OFF_T ) || ( posixconfigENABLE_OFF_T == 1 )
+    typedef long int                 off_t;
+#endif
+
+
+/* the codes below are writen by xuyunjiang at schoow university */
+
+typedef struct
+{
+    pthread_cond_t cv;
+    pthread_mutex_t resource_mutex;
+
+    /**
+     * Number of current readers holding this lock, negative number means waiting readers
+     */
+    int8_t active_readers;
+
+    uint8_t active_writers;
+    uint8_t waiting_writers;
+} pthread_rwlock_t;
+
+typedef union
+{
+  char __size[32];
+  long int __align;
+} pthread_rwlockattr_t;
+
+//至此结束
 #endif  /* !__need_inttypes */
 
 #undef __need_inttypes

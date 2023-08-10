@@ -547,6 +547,7 @@ pthread_t pthread_self( void )
 {
     /* Return a reference to this pthread object, which is stored in the
      * FreeRTOS task tag. */
+    printf("pthread_self coming in!\r\n");
     return ( pthread_t ) xTaskGetApplicationTaskTag( NULL );
 }
 

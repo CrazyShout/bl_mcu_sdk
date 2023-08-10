@@ -11,24 +11,25 @@
 /* configure the CPU type */
 OUTPUT_ARCH( "riscv" )
 /* link with the standard c library */
-INPUT(-lc)
+/* INPUT(-lc) */
 /* link with the standard GCC library */
-INPUT(-lgcc)
+/* INPUT(-lgcc) */
 /* configure the entry point */
 ENTRY(__start)
 
-StackSize    = 0x0400; /*  1KB */
+StackSize    = 0x10000; /*  64KB */
 HeapMinSize  = 0x1000; /*  4KB */
 
 MEMORY
 {
     fw_header_memory  (rx)  : ORIGIN = 0x58000000 - 0x1000, LENGTH = 4K
     xip_memory  (rx)  : ORIGIN = 0x58000000, LENGTH = 32M
-    itcm_memory (rx)  : ORIGIN = 0x3eff0000, LENGTH = 28K
-    dtcm_memory (rx)  : ORIGIN = 0x3eff7000, LENGTH = 4K
-    nocache_ram_memory (!rx) : ORIGIN = 0x3eff8000, LENGTH = 0K
-    ram_memory  (!rx) : ORIGIN = 0x3eff8000, LENGTH = 32K + 32K
+    itcm_memory (rx)  : ORIGIN = 0x50070000, LENGTH = 28K
+    dtcm_memory (rx)  : ORIGIN = 0x50077000, LENGTH = 512K
+    nocache_ram_memory (!rx) : ORIGIN = 0x500F7000, LENGTH = 0K
+    ram_memory  (!rx) : ORIGIN = 0x500F7000, LENGTH = 48M - 988K
     xram_memory (!rx) : ORIGIN = 0x40004000, LENGTH = 16K
+    psram_memory  (!rx) : ORIGIN = 0x50000000, LENGTH = 64M
 }
 
 SECTIONS
@@ -230,14 +231,14 @@ SECTIONS
 
     .heap (NOLOAD):
     {
-        . = ALIGN(4);
+        . = ALIGN(8);
         __HeapBase = .;
 
         /*__end__ = .;*/
         /*end = __end__;*/
         KEEP(*(.heap*))
 
-        . = ALIGN(4);
+        . = ALIGN(8);
         __HeapLimit = .;
     } > ram_memory
 

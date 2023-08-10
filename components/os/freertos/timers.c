@@ -233,7 +233,7 @@
     BaseType_t xTimerCreateTimerTask( void )
     {
         BaseType_t xReturn = pdFAIL;
-
+        printf(" xTimerCreateTimerTask called!");
         /* This function is called when the scheduler is started if
          * configUSE_TIMERS is set to 1.  Check that the infrastructure used by the
          * timer service task has been created/initialised.  If timers have already

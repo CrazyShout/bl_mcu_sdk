@@ -90,10 +90,10 @@ extern "C" {
  *
  * @{
  */
-#if ( configUSE_POSIX_ERRNO == 1 )
+// #if ( configUSE_POSIX_ERRNO == 1 )
     extern int FreeRTOS_errno;
     #define errno    FreeRTOS_errno
-#endif
+// #endif
 /**@} */
 
 #ifdef __cplusplus

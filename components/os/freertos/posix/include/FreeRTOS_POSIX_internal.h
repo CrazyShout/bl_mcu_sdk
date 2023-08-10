@@ -33,7 +33,7 @@
 
 /* Amazon FreeRTOS includes. */
 #include "iot_doubly_linked_list.h"
-
+#include "FreeRTOS_POSIX.h"
 /**
  * @brief Mutex attribute object.
  */
